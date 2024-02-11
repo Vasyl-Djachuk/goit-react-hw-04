@@ -1,0 +1,9 @@
+#root {
+  width: 1280px;
+  margin: 0 auto;
+  padding: 50px 40px;
+}
+.main-title {
+  margin-bottom: 40px;
+  color: black;
+}
