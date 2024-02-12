@@ -1,8 +1,0 @@
-.list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-.item {
-  width: calc((100% - 45px) / 4);
-}

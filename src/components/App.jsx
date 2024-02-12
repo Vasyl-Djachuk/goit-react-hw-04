@@ -1,59 +1,62 @@
 import 'modern-normalize';
 import './App.css';
-import { nanoid } from 'nanoid';
-import { useState, useEffect } from 'react';
-import startContacts from './dataContacts/contacts.json';
-import { ContactList } from './ContactList/ContactList';
-import { SearchBox } from './SearchBox/SearchBox';
-import { ContactForm } from './ContactForm/ContactForm';
+import SearchBar from './SearchBar/SearchBar';
+import ImageGallery from './ImageGallery/ImageGallery';
+import fetchImages from './fetch-imege-api';
+import { useState } from 'react';
+import { Audio } from 'react-loader-spinner';
+import Loader from './Loader/Loader';
+import ErrorMessage from './ErrorMessage/ErrorMessage';
+import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn';
 
-export const App = () => {
-  const [contacts, setContacts] = useState(() => {
-    const savedContacts = window.localStorage.getItem('contacts');
-    return savedContacts !== null ? JSON.parse(savedContacts) : startContacts;
-  });
+const App = () => {
+  const [searchWord, setSearchWord] = useState(``);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [page, setPage] = useState(1);
+  const [imagesData, setImagesData] = useState([]);
 
-  const [searchValue, setSearchValu] = useState('');
-  const handleChangeSearch = e => {
-    setSearchValu(e.target.value);
+  const fetchData = async search => {
+    const query = search === searchWord ? imagesData : [];
+    try {
+      setError(false);
+      setLoading(true);
+      setPage(page + 1);
+      const data = await fetchImages(search, page);
+      console.log(searchWord);
+      console.log(data);
+      setImagesData([...query, ...data.results]);
+    } catch (error) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const filtredContacts = contacts.filter(
-    contact =>
-      contact.name
-        .toLowerCase()
-        .split(` `)
-        .filter(n => n.startsWith(searchValue.toLocaleLowerCase())).length > 0
-  );
-
-  const handleSubmit = (values, actions) => {
-    values.id = nanoid();
-    setContacts([...contacts, values]);
-    actions.resetForm();
+  const onSubmit = searchText => {
+    setSearchWord(searchText);
+    fetchData(searchText);
   };
-
-  const handleDeleteClick = e => {
-    setContacts(contacts.filter(contact => contact.id !== e.target.dataset.id));
+  const handleClick = () => {
+    setPage(page + 1);
+    fetchData(searchWord);
   };
 
   return (
     <>
-      <div>
-        <h1 className="main-title">Phonebook</h1>
-        <ContactForm handleSubmit={handleSubmit} />
-        <SearchBox
-          handleChange={handleChangeSearch}
-          searchValue={searchValue}
-        />
-        <ContactList
-          contacts={filtredContacts}
-          handleDeleteClick={handleDeleteClick}
-        />
-      </div>
+      <SearchBar onSubmit={onSubmit} />
+      {error ? <ErrorMessage /> : <ImageGallery imagesData={imagesData} />}
+      {loading && <Loader />}
+      {imagesData.length > 0 && <LoadMoreBtn handleClick={handleClick} />}
     </>
   );
 };
+
+export default App;
+
+// Access Key
+// TEXOgPktRYxS - Rg08wwG2eVh7YKv3wuolUpVV7nv1g0;
+// Secret key
+// fbswjaFLjs7_Jem0FBqAJsUJ26zBlxiOTv77zMxYvgU;
+// id
+// 565979;
