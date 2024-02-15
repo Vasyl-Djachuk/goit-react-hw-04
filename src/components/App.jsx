@@ -17,10 +17,10 @@ const App = () => {
   const [page, setPage] = useState(1);
   const [imagesData, setImagesData] = useState([]);
   const [errorMessage, setErrorMessage] = useState(``);
+  const [modal, setModal] = useState({ isOpen: false });
 
   const fetchData = async (search, currentpage) => {
     const query = search === searchWord ? imagesData : [];
-
     try {
       setModal({ isOpen: false });
       setError(false);
@@ -43,18 +43,18 @@ const App = () => {
     setPage(1);
     scroll.scrollTo(0);
   };
+
   const handleClick = () => {
     fetchData(searchWord, page + 1);
     setPage(page + 1);
   };
+
   useEffect(() => {
     if (page !== 1) {
       const height = window.innerHeight - 130;
       scroll.scrollMore(height);
     }
   }, [page]);
-
-  const [modal, setModal] = useState({ isOpen: false });
 
   const handleImage = evt => {
     const id = evt.target.dataset.id;
@@ -63,32 +63,32 @@ const App = () => {
       isOpen: true,
       id: Number(id),
     });
-    console.log(evt.target.dataset.id);
   };
-  const images = imagesData.length;
+
+  const isBtnOpen = imagesData.length > 19 && !loading;
+  const serchError = !error && imagesData.length == 0 && !loading && searchWord;
   return (
     <>
       <SearchBar onSubmit={onSubmit} />
       {error ? (
         <ErrorMessage errorMessage={errorMessage} />
       ) : (
-        images > 0 && (
+        imagesData.length > 0 && (
           <ImageGallery onHandleImage={handleImage} imagesData={imagesData} />
         )
       )}
 
       {loading && <Loader />}
-      {images > 0 && !loading && <LoadMoreBtn handleClick={handleClick} />}
+      {isBtnOpen && <LoadMoreBtn handleClick={handleClick} />}
       {modal.isOpen && <ImageModal modal={modal} data={imagesData} />}
+      {serchError && (
+        <p className="serch-error">
+          Sorry, there are no images matching your search query. Please try
+          again!
+        </p>
+      )}
     </>
   );
 };
 
 export default App;
-
-// Access Key
-// TEXOgPktRYxS - Rg08wwG2eVh7YKv3wuolUpVV7nv1g0;
-// Secret key
-// fbswjaFLjs7_Jem0FBqAJsUJ26zBlxiOTv77zMxYvgU;
-// id
-// 565979;

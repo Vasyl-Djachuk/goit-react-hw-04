@@ -2,11 +2,11 @@ import css from './ErrorMessage.module.css';
 import { useState } from 'react';
 
 const ErrorMessage = ({ errorMessage }) => {
-  console.log(errorMessage);
   const [showError, setShowError] = useState(false);
   const handleClick = () => {
     setShowError(!showError);
   };
+
   return (
     <div className={css.wrapper}>
       <p className={css.text}>Something went wrong, please try again.</p>
