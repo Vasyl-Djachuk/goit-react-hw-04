@@ -13,10 +13,10 @@ const fetchImages = async (query, page) => {
         Authorization: `Client-ID TEXOgPktRYxS-Rg08wwG2eVh7YKv3wuolUpVV7nv1g0`,
       },
     });
-    // console.log(response);
+
     return response.data;
   } catch (error) {
-    console.log(error);
+    return error;
   }
 };
 export default fetchImages;

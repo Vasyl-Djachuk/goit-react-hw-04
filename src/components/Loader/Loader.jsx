@@ -1,12 +1,13 @@
 import { Audio } from 'react-loader-spinner';
 import css from './Loader.module.css';
+import clsx from 'clsx';
 
 const Loader = () => {
   return (
-    <div className={css.loader}>
+    <div className={clsx(css.loader)}>
       <Audio
-        height="80"
-        width="80"
+        height="60"
+        width="60"
         radius="9"
         color="green"
         ariaLabel="three-dots-loading"

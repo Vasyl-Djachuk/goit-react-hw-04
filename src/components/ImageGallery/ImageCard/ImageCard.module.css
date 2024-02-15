@@ -2,4 +2,10 @@
   width: 330px;
   height: 220px;
   overflow: hidden;
+  transition: transform 250ms linear;
+  cursor: zoom-in;
+}
+
+.container:hover {
+  transform: scale(1.04);
 }

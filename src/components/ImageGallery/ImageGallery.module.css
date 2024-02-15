@@ -1,10 +1,19 @@
 .list {
   display: flex;
   flex-wrap: wrap;
-  width: 1440px;
+  width: 375px;
   margin-right: auto;
   margin-left: auto;
   gap: 20px;
   padding: 20px;
-  padding-top: 80px;
+}
+@media screen and (min-width: 768px) {
+  .list {
+    width: 768px;
+  }
+}
+@media screen and (min-width: 1440px) {
+  .list {
+    width: 1440px;
+  }
 }

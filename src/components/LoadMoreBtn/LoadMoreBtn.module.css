@@ -1,0 +1,20 @@
+.wrapperBtn {
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 20px;
+}
+.btn {
+  border: none;
+  width: 100%;
+  background-color: rgb(82, 82, 201);
+  color: white;
+  border-radius: 10px;
+  transition: background-color 250ms linear;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: rgb(60, 60, 180);
+}
